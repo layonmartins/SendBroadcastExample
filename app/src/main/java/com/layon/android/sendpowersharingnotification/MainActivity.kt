@@ -12,6 +12,12 @@ import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
+    //Broadcast receiver reference
+    private val myBroadcastReceiver by lazy { makeBroadcastReceiver() }
+
+    //Intent filter reference
+    lateinit var filter: IntentFilter
+
     //name of the intents
     var intentPowerSharingOn = "com.layonf.broadcast.POWER_SHARING_ON"
     var intentPowerSharingOff = "com.layonf.broadcast.POWER_SHARING_OFF"
@@ -32,29 +38,22 @@ class MainActivity : AppCompatActivity() {
             sendBroadcast(intentPowerSharingOff)
         }
 
-        //create a broadcast receiver object
-        val broadCastReceiver = object : BroadcastReceiver() {
-            override fun onReceive(contxt: Context?, intent: Intent?) {
-                //get textview reference
-                val txt_last_broadcast = findViewById(R.id.last_broadcast) as TextView
-                //update the last broadcast text with the last sended broadcast
-                when (intent?.action) {
-                    intentPowerSharingOn -> txt_last_broadcast.setText(intentPowerSharingOn)
-                    intentPowerSharingOff -> txt_last_broadcast.setText(intentPowerSharingOff)
-                }
-            }
-        }
-
-
         //add intent to register broadcast
-        val filter = IntentFilter().apply {
+        filter = IntentFilter().apply {
             addAction(intentPowerSharingOn)
             addAction(intentPowerSharingOff)
         }
 
         //register brodcast receiver
-        registerReceiver(broadCastReceiver, filter)
+        registerReceiver(myBroadcastReceiver, filter)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        //unregister broadcast
+        unregisterReceiver(myBroadcastReceiver)
+    }
+
 
     //send the broadcast
     fun sendBroadcast(intentName: String){
@@ -66,5 +65,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //fun to initialize myBroadcastReceiver by lazy
+    private fun makeBroadcastReceiver(): BroadcastReceiver {
+        return object : BroadcastReceiver() {
+            override fun onReceive(contxt: Context?, intent: Intent?) {
+                //get textview reference
+                val txt_last_broadcast = findViewById(R.id.last_broadcast) as TextView
+                //update the last broadcast text with the last sended broadcast
+                when (intent?.action) {
+                    intentPowerSharingOn -> txt_last_broadcast.setText(intentPowerSharingOn)
+                    intentPowerSharingOff -> txt_last_broadcast.setText(intentPowerSharingOff)
+                }
+            }
+        }
+    }
 
 }
