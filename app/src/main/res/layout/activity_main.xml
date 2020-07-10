@@ -8,11 +8,24 @@
     android:orientation="vertical"
     android:gravity="center">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Broadcast:"/>
+
+    <Button
+        android:id="@+id/powersharing_changed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="POWER_SHARING CHANGED"
+        android:layout_margin="20dp"
+        />
+
     <Button
         android:id="@+id/powersharing_on"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send Broadcast POWER_SHARING ON"
+        android:text="POWER_SHARING ON"
         android:layout_margin="20dp"
         />
 
@@ -20,7 +33,7 @@
         android:id="@+id/powersharing_off"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send Broadcast POWER_SHARING OFF"
+        android:text="POWER_SHARING OFF"
         android:layout_margin="20dp"
         />
 
