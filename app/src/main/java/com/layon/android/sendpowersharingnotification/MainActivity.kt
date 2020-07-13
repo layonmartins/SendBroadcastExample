@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var filter: IntentFilter
 
     //State of the power share
-    var mState = -1
+    var mState = "-1"
 
     //define int states powersharing
     val WIRELESS_POWER_SHARE_STATE_OFF = 0
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         with(builder) {
             setTitle("Select the POWER_SHARE_STATE:")
             setItems(items) { dialog, which ->
-                Toast.makeText(applicationContext, items[which] + " is clicked", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(applicationContext, items[which] + " is clicked", Toast.LENGTH_SHORT).show()
                 //get the correct value
                 mState = getState(items[which])
                 sendBroadcast(intentPowerSharingChanged)
@@ -91,13 +91,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     //convert power_share_state
-    private fun getState(state: String): Int {
+    private fun getState(state: String): String {
         return when (state) {
-            STATE_OFF -> 0
-            STATE_PEER_WAITING -> 1
-            STATE_PEER_CONNECTED -> 2
-            STATE_POWER_TRANSER -> 3
-            else -> -1
+            STATE_OFF -> "0"
+            STATE_PEER_WAITING -> "1"
+            STATE_PEER_CONNECTED -> "2"
+            STATE_POWER_TRANSER -> "3"
+            else -> "-1"
         }
     }
 
@@ -111,9 +111,10 @@ class MainActivity : AppCompatActivity() {
 
     //send the broadcast
     fun sendBroadcast(intentName: String){
-        Log.d("layonfapp", "sendbroadst = " + intentName)
+
         Intent().also { intent ->
             intent.setAction(intentName)
+            //Log.d("layonfapp", "sendbroadst = " + intentName + "state = " + mState)
             intent.putExtra("state", mState)
             sendBroadcast(intent)
         }
